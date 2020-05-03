@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<!--<head th:include="include :: header"></head>-->
+<head th:include="includejqgrid :: includejqgrid">
+
+</head>
+<script src="/js/common.js"></script>
+<link href="/layui/css/layui.css" rel="stylesheet"/>
+<script src="/layui/layui.js"></script>
+<script src="/js/jquery.validate.js"></script>
+<script>
+    var ipport = window.location.host; //ip+端口
+    var prefix = "http://" + ipport;
+</script>
+<body>
+<div id="rrapp">
+    <div class="container-div">
+        <div class="row">
+            <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+
+                <a class="btn btn-danger btn-del " @click="batchGenCode()" shiro:hasPermission="tool:gen:code">
+                    <i class="fa fa-remove"></i> 生成代码
+                </a>
+            </div>
+
+            <div  style="margin-top: 10px">
+                <table id="jqGrid" data-mobile-responsive="true"></table>
+                <div id="jqGridPager"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/statics/js/modules/test/test3.js" type="text/javascript"></script>
+
+</div>
+</body>
+</html>

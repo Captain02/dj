@@ -1,0 +1,48 @@
+.el-row {
+    margin-bottom: 20px;
+}
+.el-col {
+    border-radius: 4px;
+}
+[v-cloak] {
+    display: none;
+}
+.bg-purple-dark {
+    background: #ffffff;
+}
+.bg-purple {
+    background: #ffffff;
+}
+.bg-purple-light {
+    background: #ffffff;
+}
+.grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+}
+.row-bg {
+    padding: 10px 0;
+    background-color: #ffffff;
+}
+
+/*卡片*/
+.text {
+    font-size: 14px;
+}
+
+.item {
+    margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+.clearfix:after {
+    clear: both
+}
+
+.box-card {
+    height: auto;
+}

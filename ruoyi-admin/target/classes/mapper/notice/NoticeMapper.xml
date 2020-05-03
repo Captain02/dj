@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NoticeMapper">
+
+
+    <sql id="selectNoticeVo">
+        select id,title,content,createtime,createUser from notice
+    </sql>
+    <!--列表-->
+    <select id="selectNoticelistPage" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectNoticeVo"/>
+        WHERE 1 =1
+
+
+        order by createtime DESC
+    </select>
+    <!--id-->
+    <select id="selectNoticeById" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectNoticeVo"/>
+        where id = #{id}
+    </select>
+    <!--保存-->
+    <insert id="insertNotice">
+        insert into notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="title != null  and title != ''">title,
+            </if>
+
+            <if test="content != null  and content != ''">content,
+            </if>
+
+            createtime,
+
+            <if test="createUser != null  and createUser != ''">createUser,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != '' ">#{title},
+            </if>
+            <if test="content != null and content != '' ">#{content},
+            </if>
+            now(),
+            <if test="createUser != null and createUser != '' ">#{createUser},
+            </if>
+        </trim>
+    </insert>
+    <!--修改-->
+    <update id="updateNotice">
+        update notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''">title =
+                #{title},
+            </if>
+            <if test="content != null  and content != ''">content =
+                #{content},
+            </if>
+            <if test="createtime != null  and createtime != ''">createtime =
+                #{createtime},
+            </if>
+            <if test="createUser != null  and createUser != ''">createUser =
+                #{createUser},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <!--删除-->
+    <delete id="deleteNoticeById">
+        delete from notice where id = #{id}
+    </delete>
+    <!--删除-->
+    <delete id="deleteNoticeByIds">
+        delete from notice where id in
+        <foreach item="id" collection="list" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

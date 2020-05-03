@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ConfirmMapper">
+
+    <sql id="selectConfirmVo">
+        SELECT * from sys_confirm
+    </sql>
+    <!--列表-->
+    <select id="selectConfirmlistPage" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectConfirmVo"/>
+        WHERE 1 =1
+   
+
+    </select>
+    <!--id-->
+    <select id="selectConfirmById" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectConfirmVo"/>
+        where id = #{id}
+    </select>
+    <!--id-->
+    <select id="selectDept" resultType="com.sgccmt.bhcz.utils.PageData">
+        SELECT  dept_name from sys_dept
+        where dept_id = #{deptid}
+    </select>
+    <!--id-->
+    <select id="selectDict" resultType="com.sgccmt.bhcz.utils.PageData">
+       SELECT dict_label from sys_dict_data where dict_type ='sys_user_sex' and dict_value = #{sex}
+    </select>
+
+
+    <insert id="insertConfirm">
+        INSERT into sys_confirm (deptid,content,peopleId) VALUES (#{deptid},#{content},#{peopleId});
+    </insert>
+    <!--修改-->
+    <update id="updateConfirm">
+        update people
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="order != null  and order != ''">`order` = #{order},
+            </if>
+            <if test="name != null  and name != ''">`name` = #{name},
+            </if>
+            <if test="images != null  and images != ''">images = #{images},
+            </if>
+            <if test="sex != null  and sex != ''">sex = #{sex},
+            </if>
+            <if test="nation != null  and nation != ''">nation = #{nation},
+            </if>
+            <if test="place != null  and place != ''">place = #{place},
+            </if>
+            <if test="type != null  and type != ''">`type` = #{type},
+            </if>
+            <if test="personid != null  and personid != ''">personid = #{personid},
+            </if>
+            <if test="workid != null  and workid != ''">workid = #{workid},
+            </if>
+            <if test="education != null  and education != ''">education = #{education},
+            </if>
+            <if test="birthday != null  and birthday != ''">birthday = #{birthday},
+            </if>
+            <if test="worddate != null  and worddate != ''">worddate = #{worddate},
+            </if>
+            <if test="rcpcdate != null  and rcpcdate != ''">rcpcdate = #{rcpcdate},
+            </if>
+            <if test="zcpcdate != null  and zcpcdate != ''">zcpcdate = #{zcpcdate},
+            </if>
+            <if test="deptid != null  and deptid != ''">deptid = #{deptid},
+            </if>
+            <if test="work != null  and work != ''">`work` = #{work},
+            </if>
+            <if test="address != null  and address != ''">address = #{address},
+            </if>
+            <if test="telephone != null  and telephone != ''">telephone = #{telephone},
+            </if>
+            <if test="other != null  and other != ''">other = #{other},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <!--删除-->
+    <delete id="deleteConfirmById">
+        delete from sys_confirm where id = #{id}
+    </delete>
+    <!--删除-->
+    <delete id="deleteConfirmByIds">
+        delete from people where id in
+        <foreach item="id" collection="list" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

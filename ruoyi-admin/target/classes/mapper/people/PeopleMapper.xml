@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PeopleMapper">
+
+    <sql id="selectPeopleVo">
+        select id,`order`,`name`,images,sex,(SELECT dict_label from sys_dict_data where dict_type ='sys_user_sex' and dict_value =people.sex) as sexs,nation,age,place,`type`,personid,workid,education,birthday,worddate,rcpcdate,zcpcdate,deptid,`work`,address,telephone,other,dept.dept_name as DeptName from people left join sys_dept as dept on dept.dept_id=people.deptid
+    </sql>
+    <!--列表-->
+    <select id="selectPeoplelistPage" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectPeopleVo"/>
+        WHERE 1 =1
+        <if test="pd.deptid != null  and pd.deptid != ''  ">
+            AND (deptid = #{pd.deptid} OR deptid IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET
+            (#{pd.deptid},ancestors) ))
+        </if>
+
+    </select>
+    <!--id-->
+    <select id="selectPeopleById" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectPeopleVo"/>
+        where id = #{id}
+    </select>
+    <!--男女数量-->
+    <select id="selectUserSexNum" resultType="com.sgccmt.bhcz.utils.PageData">
+        SELECT (SELECT dict_label from sys_dict_data where dict_type ='sys_user_sex' and dict_value =sys_user.sex) as sex,
+        count(user_id) as nums from sys_user
+        WHERE 1 =1
+        <if test="deptId != null  and deptId != ''  ">
+            AND (dept_id = #{deptId} OR dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET
+            (#{deptId},ancestors) ))
+        </if>
+        GROUP BY sex
+    </select>
+    <select id="selectPeopleAgeNum" resultType="com.sgccmt.bhcz.utils.PageData">
+        SELECT age, count(user_id) as num from sys_user
+        WHERE 1 =1
+        <if test="deptId != null  and deptId != ''  ">
+            AND (dept_id = #{deptId} OR dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET
+            (#{deptId},ancestors) ))
+        </if>
+        GROUP BY age
+    </select>
+    <!--保存-->
+    <insert id="insertPeople">
+        insert into people
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="order != null  and order != ''">`order`,
+            </if>
+            <if test="age != null  and age != ''">`age`,
+            </if>
+
+            <if test="name != null  and name != ''">`name`,
+            </if>
+
+            <if test="images != null  and images != ''">images,
+            </if>
+
+            <if test="sex != null  and sex != ''">sex,
+            </if>
+
+            <if test="nation != null  and nation != ''">nation,
+            </if>
+
+            <if test="place != null  and place != ''">place,
+            </if>
+
+            <if test="type != null  and type != ''">`type`,
+            </if>
+
+            <if test="personid != null  and personid != ''">personid,
+            </if>
+
+            <if test="workid != null  and workid != ''">workid,
+            </if>
+
+            <if test="education != null  and education != ''">education,
+            </if>
+
+            <if test="birthday != null  and birthday != ''">birthday,
+            </if>
+
+            <if test="worddate != null  and worddate != ''">worddate,
+            </if>
+
+            <if test="rcpcdate != null  and rcpcdate != ''">rcpcdate,
+            </if>
+
+            <if test="zcpcdate != null  and zcpcdate != ''">zcpcdate,
+            </if>
+
+            <if test="deptid != null  and deptid != ''">deptid,
+            </if>
+
+            <if test="work != null  and work != ''">`work`,
+            </if>
+
+            <if test="address != null  and address != ''">address,
+            </if>
+
+            <if test="telephone != null  and telephone != ''">telephone,
+            </if>
+
+            <if test="other != null  and other != ''">other,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="order != null and order != '' ">#{order},
+            </if>
+            <if test="age != null and age != '' ">#{age},
+            </if>
+            <if test="name != null and name != '' ">#{name},
+            </if>
+            <if test="images != null and images != '' ">#{images},
+            </if>
+            <if test="sex != null and sex != '' ">#{sex},
+            </if>
+            <if test="nation != null and nation != '' ">#{nation},
+            </if>
+            <if test="place != null and place != '' ">#{place},
+            </if>
+            <if test="type != null and type != '' ">#{type},
+            </if>
+            <if test="personid != null and personid != '' ">#{personid},
+            </if>
+            <if test="workid != null and workid != '' ">#{workid},
+            </if>
+            <if test="education != null and education != '' ">#{education},
+            </if>
+            <if test="birthday != null and birthday != '' ">#{birthday},
+            </if>
+            <if test="worddate != null and worddate != '' ">#{worddate},
+            </if>
+            <if test="rcpcdate != null and rcpcdate != '' ">#{rcpcdate},
+            </if>
+            <if test="zcpcdate != null and zcpcdate != '' ">#{zcpcdate},
+            </if>
+            <if test="deptid != null and deptid != '' ">#{deptid},
+            </if>
+            <if test="work != null and work != '' ">#{work},
+            </if>
+            <if test="address != null and address != '' ">#{address},
+            </if>
+            <if test="telephone != null and telephone != '' ">#{telephone},
+            </if>
+            <if test="other != null and other != '' ">#{other},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertConfim">
+        INSERT into sys_confirm (deptid,content,peopleId) VALUES (#{deptid},#{content},#{peopleId});
+    </insert>
+    <!--修改-->
+    <update id="updatePeople">
+        update people
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="order != null  and order != ''">`order` = #{order},
+            </if>
+            <if test="age != null  and age != ''">`age` = #{age},
+            </if>
+            <if test="name != null  and name != ''">`name` = #{name},
+            </if>
+            <if test="images != null  and images != ''">images = #{images},
+            </if>
+            <if test="sex != null  and sex != ''">sex = #{sex},
+            </if>
+            <if test="nation != null  and nation != ''">nation = #{nation},
+            </if>
+            <if test="place != null  and place != ''">place = #{place},
+            </if>
+            <if test="type != null  and type != ''">`type` = #{type},
+            </if>
+            <if test="personid != null  and personid != ''">personid = #{personid},
+            </if>
+            <if test="workid != null  and workid != ''">workid = #{workid},
+            </if>
+            <if test="education != null  and education != ''">education = #{education},
+            </if>
+            <if test="birthday != null  and birthday != ''">birthday = #{birthday},
+            </if>
+            <if test="worddate != null  and worddate != ''">worddate = #{worddate},
+            </if>
+            <if test="rcpcdate != null  and rcpcdate != ''">rcpcdate = #{rcpcdate},
+            </if>
+            <if test="zcpcdate != null  and zcpcdate != ''">zcpcdate = #{zcpcdate},
+            </if>
+            <if test="deptid != null  and deptid != ''">deptid = #{deptid},
+            </if>
+            <if test="work != null  and work != ''">`work` = #{work},
+            </if>
+            <if test="address != null  and address != ''">address = #{address},
+            </if>
+            <if test="telephone != null  and telephone != ''">telephone = #{telephone},
+            </if>
+            <if test="other != null  and other != ''">other = #{other},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateUser">
+        update sys_user set
+        dept_id = #{deptid}
+        where user_id = #{id}
+    </update>
+    <!--删除-->
+    <delete id="deletePeopleById">
+        delete from people where id = #{id}
+    </delete>
+    <!--删除-->
+    <delete id="deletePeopleByIds">
+        delete from people where id in
+        <foreach item="id" collection="list" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

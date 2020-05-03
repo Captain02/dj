@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<!--<head th:include="include :: header"></head>-->
+<head th:include="includejqgrid :: includejqgrid">
+
+</head>
+<body>
+<div id="rrapp" class="layui-fluid" style="background-color: #F1F1F2">
+    <!--搜索-->
+    <div class="layui-row">
+
+        <div id="sera" class="col-sm-12 search-collapse">
+            <form id="gen-form">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            序号:<input style="width:220px; height:35.23px  " type="text" v-model="q.order"
+                                      placeholder="序号"/>
+                        </li>
+
+                        <!--普通下拉-->
+                        <!--<li>-->
+                        <!--<select class="btn-group" style="width:220px; height:35.23px;">-->
+                        <!--<option v-for="dropdown in dropdown" :value="dropdown.id">{{dropdown.name}}</option>-->
+                        <!--</select>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+                <!--搜索下拉-->
+                <!--<select style="width:220px; height:35.23px;" id="selectuserid" class="selectpicker"-->
+                <!--data-live-search="true">-->
+                <!--</select>-->
+                <a class="btn btn-primary btn-rounded btn-sm" @click="query"><i
+                        class="fa fa-search"></i>&nbsp;搜索</a>&nbsp;&nbsp;
+                <a class="btn btn-warning btn-rounded btn-sm" @click="reset"><i
+                        class="fa fa-refresh"></i>&nbsp;重置</a>
+            </form>
+        </div>
+    </div>
+
+    <!--jqgrid-->
+    <div class="layui-row" style="background-color: white;">
+        <!--jqgrid表格-->
+        <div id="jq" class="col-sm-12">
+            <table id="jqGrid" data-mobile-responsive="true"></table>
+            <div id="jqGridPager" style="background-color: white"></div>
+        </div>
+    </div>
+    <!--表单-->
+
+    0
+    <script src="/statics/js/modules/confirm/confrim.js"></script>
+</div>
+</body>
+</html>

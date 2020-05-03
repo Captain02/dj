@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="XtJzZcMapper">
+
+
+
+    <select id="selectXtJzZclistPage" resultType="com.sgccmt.bhcz.utils.PageData">
+      select ID,InOrder,'Code',Name as 'name',Name as DirectoryName,FullName,JZZCLXID,ParentID ,ParentIDS,ProvinceID,CityID,AreaID,Lng,Lat,Lngoff,Latoff,Points,TreeLevel,DeptID,CreateTime,CreateUserID,UpdateTime,UpdateUserID,Enabled,Memo,DelFlag,expanded,is_leaf,level,loaded from xt_jz_zc
+
+    </select>
+    <!--登录验证-->
+    <select id="loginChecks" resultType="com.sgccmt.bhcz.utils.PageData">
+        select distinct sys_user.dept_id,
+        length(sys_dept.ancestors)-length(replace(sys_dept.ancestors, ',', '')) as deptlength
+        from sys_user
+        left join sys_dept on sys_dept.dept_id = sys_user.dept_id
+        WHERE  sys_user.dept_id = #{deptid}
+
+
+    </select>
+</mapper>

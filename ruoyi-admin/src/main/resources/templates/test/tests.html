@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<!--<head th:include="include :: header"></head>-->
+<head th:include="includejqgrid :: includejqgrid">
+
+
+
+</head>
+
+
+<script src="/js/common.js"></script>
+<link href="/layui/css/layui.css" rel="stylesheet"/>
+<script src="/layui/layui.js"></script>
+<script src="/js/jquery.validate.js"></script>
+<script>
+    var ipport = window.location.host; //ip+端口
+    var prefix = "http://" + ipport;
+</script>
+<body>
+<div id="rrapp">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="post-form">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                岗位编码：<input type="text" name="postCode"/>
+                            </li>
+                            <li>
+                                岗位名称：<input type="text" name="postName"/>
+                            </li>
+                            <li>
+                                岗位状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                        class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                        class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                <a class="btn btn-success" @click="addPage()" shiro:hasPermission="system:post:add">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-primary btn-edit" @click="editPage()" shiro:hasPermission="system:post:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger btn-del " @click="del()" shiro:hasPermission="system:post:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+
+            </div>
+
+            <div style="margin-top: 10px">
+                <table id="jqGrid" data-mobile-responsive="true"></table>
+                <div id="jqGridPager"></div>
+            </div>
+        </div>
+    </div>
+    <form class="layui-form" style="padding: 10px" hidden action="" id="tableLayer">
+        <input type="hidden" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">tname</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamuuid" v-model="form.tname" required lay-verify="teamuuid"
+                       placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">age</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamname" v-model="form.age" required lay-verify="teamname" placeholder="请输入姓名"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">address</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamname" v-model="form.address" required lay-verify="teamname"
+                       placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">phone</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamname" v-model="form.phone" required lay-verify="teamname"
+                       placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+    </form>
+
+
+    <form class="layui-form" style="padding: 10px" hidden action="" id="editLayer">
+        <input type="hidden" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">tname</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamuuid" v-model="edit.tname" required lay-verify="teamuuid"
+                       placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">age</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamname" v-model="edit.age" required lay-verify="teamname" placeholder="请输入姓名"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">address</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamname" v-model="edit.address" required lay-verify="teamname"
+                       placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">phone</label>
+            <div class="layui-input-inline">
+                <input type="text" name="teamname" v-model="edit.phone" required lay-verify="teamname"
+                       placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+    </form>
+    <script src="/statics/js/modules/test/tests.js"></script>
+
+</div>
+</body>
+</html>

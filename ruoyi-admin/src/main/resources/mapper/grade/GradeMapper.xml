@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GradeMapper">
+
+    <sql id="selectGradeVo">
+        select id,grade,discount,update_user,memo1,memo2 from grade
+    </sql>
+    <!--列表-->
+    <select id="selectGradelistPage" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectGradeVo"/>
+        WHERE 1 =1
+        <if test="pd.grade != null  and pd.grade != ''  ">
+            AND grade like '%' #{pd.grade} '%'
+        </if>
+        <if test="pd.discount != null  and pd.discount != ''  ">
+            AND discount like '%' #{pd.discount} '%'
+        </if>
+        <if test="pd.update_user != null  and pd.update_user != ''  ">
+            AND update_user like '%' #{pd.update_user} '%'
+        </if>
+        <if test="pd.memo1 != null  and pd.memo1 != ''  ">
+            AND memo1 like '%' #{pd.memo1} '%'
+        </if>
+        <if test="pd.memo2 != null  and pd.memo2 != ''  ">
+            AND memo2 like '%' #{pd.memo2} '%'
+        </if>
+    </select>
+    <!--id-->
+    <select id="selectGradeById" resultType="com.sgccmt.bhcz.utils.PageData">
+        <include refid="selectGradeVo"/>
+        where id = #{id}
+    </select>
+    <!--保存-->
+    <insert id="insertGrade">
+        insert into grade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="grade != null  and grade != ''">grade,
+            </if>
+
+            <if test="discount != null  and discount != ''">discount,
+            </if>
+
+            <if test="update_user != null  and update_user != ''">update_user,
+            </if>
+
+            <if test="memo1 != null  and memo1 != ''">memo1,
+            </if>
+
+            <if test="memo2 != null  and memo2 != ''">memo2,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="grade != null and grade != '' ">#{grade},
+            </if>
+            <if test="discount != null and discount != '' ">#{discount},
+            </if>
+            <if test="update_user != null and update_user != '' ">#{update_user},
+            </if>
+            <if test="memo1 != null and memo1 != '' ">#{memo1},
+            </if>
+            <if test="memo2 != null and memo2 != '' ">#{memo2},
+            </if>
+        </trim>
+    </insert>
+    <!--修改-->
+    <update id="updateGrade">
+        update grade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="grade != null  and grade != ''">grade = #{grade},
+            </if>
+            <if test="discount != null  and discount != ''">discount = #{discount},
+            </if>
+            <if test="update_user != null  and update_user != ''">update_user = #{update_user},
+            </if>
+            <if test="memo1 != null  and memo1 != ''">memo1 = #{memo1},
+            </if>
+            <if test="memo2 != null  and memo2 != ''">memo2 = #{memo2},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <!--删除-->
+    <delete id="deleteGradeById">
+        delete from grade where id = #{id}
+    </delete>
+    <!--删除-->
+    <delete id="deleteGradeByIds">
+        delete from grade where id in
+        <foreach item="id" collection="list" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
